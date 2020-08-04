@@ -119,7 +119,7 @@ def tri(a,bl): #tri checks for triangular upper matrix
 def Francis(a,bl=0.00000000001,c=1000): #Francis algorithm of finding eigenvalues
     '''
     bl = computational squared error, 
-    c = abort counter - after c iterations func just returns current values
+    c = abort counter - after c iterations func just returns currently computed values
     '''
     i=0
     while not(tri(a,bl)|tri(mh.MatrixTrans(a),bl)|(i==c)):
