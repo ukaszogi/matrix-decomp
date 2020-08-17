@@ -9,6 +9,12 @@ def MatrixMake(n,m):
     for i in range(len(c)):
         c[i].pop()
     return c
+
+def MatrixIdentity(n):
+    i = MatrixMake(n,n)
+    for j in range(n):
+        i[j][j] = 1
+    return i
     
 def MatrixAdd(a,b):
     c = MatrixMake(len(a),len(a[0]))
