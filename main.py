@@ -1,4 +1,5 @@
 import matrix_handler as mh
+from math import sqrt
 
 def Sigma(a,i,n):
     if i>n:
@@ -20,7 +21,7 @@ def LU(a): #LU decomposition
             l[j][i] = (a[j][i] - Sigma(lambda k: l[j][k]*u[k][i],0,i-1))/u[i][i]
     return l, u
 
-def symet(a): #check symetric
+def symet(a): #check for symmetricity
     for i in range(len(a)-1):
         for j in range(i+1,len(a)):
             if a[i][j]!=a[j][i]:
@@ -73,7 +74,7 @@ def QR(a): #Gram-Schmidt's proccess
     u = [c[0].copy()] #first iteration eliminates problem of none return of vecSigma
     e = [list(map(lambda k: k/magn(u[0]),u[0]))]
     for i in range(1,len(a[0])):
-        print(vecSigma( lambda k: ortProj(u[k],c[i]),0,i-1 ))
+        #print(vecSigma( lambda k: ortProj(u[k],c[i]),0,i-1 ))
         u.append( vecSub(c[i], vecSigma( lambda k: ortProj(u[k],c[i]),0,i-1 ) ) )
         e.append(list(map(lambda k: k/magn(u[i]),u[i])))
     q = mh.MatrixTrans(e)
@@ -83,9 +84,7 @@ def QR(a): #Gram-Schmidt's proccess
 def HausholderRef(a):
     v = a.copy()
     v[0] -= magn(a)
-    I = mh.MatrixMake(len(a),len(a))
-    for i in range(len(a)):
-        I[i][i] = 1
+    I = mh.MatrixIdentity(len(a))
     return mh.MatrixAdd(I,mh.MatrixScale(mh.MatrixMulti(mh.MatrixTrans([v]),[v]),-2/dotProd(v,v)))
 
 def fill(c,hp): #fill fills matrix with identity matrix and two zeroed matrices
@@ -124,9 +123,41 @@ def Francis(a,bl=0.00000000001,c=1000): #Francis algorithm of finding eigenvalue
     i=0
     while not(tri(a,bl)|tri(mh.MatrixTrans(a),bl)|(i==c)):
         #print("i =",i)
-        q, r = QR(a)
+        q, r = HausQR(a)
         i += 1
         a = mh.MatrixMulti(r,q)
-        #mh.MatrixPrint(ap)
+        #mh.MatrixPrint(a)
     #print("end of algorithm after",i,"iterations")
     return list(map(lambda x: a[x][x], range(len(a)))) 
+
+def SVD(a):
+    aat = mh.MatrixMulti(a,mh.MatrixTrans(a))
+    ata = mh.MatrixMulti(mh.MatrixTrans(a),a)
+    print("aat")
+    mh.MatrixPrint(aat)
+    mh.MatrixPrint(ata)
+    eigenvalues = list(map(lambda x: round(x,ndigits=6), Francis(aat)))
+    singularvalues = list(map(sqrt,eigenvalues))
+    mh.MatrixPrint([eigenvalues])
+    mh.MatrixPrint([singularvalues])
+    eigenvalues = Francis(ata)
+    mh.MatrixPrint([eigenvalues])
+    
+
+A = [
+    [3, 2, 2],
+    [2, 3, -2]
+]
+b = [
+    [2, 4],
+    [1, 3],
+    [0, 0],
+    [0, 0]
+]
+
+
+"""
+mh.MatrixPrint(mh.MatrixMulti(b,mh.MatrixTrans(b)))
+mh.MatrixPrint(mh.MatrixMulti(mh.MatrixTrans(b),b))
+"""
+SVD(A)
