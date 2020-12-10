@@ -81,13 +81,13 @@ def QR(a): #Gram-Schmidt's proccess
     r = mh.MatrixMulti(e,a) #QR = A => (Q^-1)QR = (Q^-1)A => R = (Qt)A
     return q, r
 
-def HausholderRef(a):
+def HausholderRef(a): #funtion for returning matrics that makes hauholder refletion based on a vector
     v = a.copy()
     v[0] -= magn(a)
     I = mh.MatrixIdentity(len(a))
     return mh.MatrixAdd(I,mh.MatrixScale(mh.MatrixMulti(mh.MatrixTrans([v]),[v]),-2/dotProd(v,v)))
 
-def fill(c,hp): #fill fills matrix with identity matrix and two zeroed matrices
+def fill(c,hp): #fill fills hp matrix with identity matrix and two zeroed matrices
     h = mh.MatrixMake(c,c)
     for i in range(c-len(hp)):
         h[i][i]=1
@@ -133,15 +133,16 @@ def Francis(a,bl=0.00000000001,c=1000): #Francis algorithm of finding eigenvalue
 def SVD(a):
     aat = mh.MatrixMulti(a,mh.MatrixTrans(a))
     ata = mh.MatrixMulti(mh.MatrixTrans(a),a)
-    print("aat")
-    mh.MatrixPrint(aat)
-    mh.MatrixPrint(ata)
+    mh.MatrixPrint(aat,"aat")
+    mh.MatrixPrint(ata,"ata")
     eigenvalues = list(map(lambda x: round(x,ndigits=6), Francis(aat)))
     singularvalues = list(map(sqrt,eigenvalues))
-    mh.MatrixPrint([eigenvalues])
-    mh.MatrixPrint([singularvalues])
-    eigenvalues = Francis(ata)
-    mh.MatrixPrint([eigenvalues])
+    mh.MatrixPrint([eigenvalues],"eigen aat")
+    mh.MatrixPrint([singularvalues],"singular aat")
+    eigenvalues = list(map(lambda x: round(x,ndigits=6), Francis(ata)))
+    singularvalues = list(map(sqrt,eigenvalues))
+    mh.MatrixPrint([eigenvalues],"eigen ata")
+    mh.MatrixPrint([singularvalues],"singular ata")
     
 
 A = [

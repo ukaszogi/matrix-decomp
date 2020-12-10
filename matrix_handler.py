@@ -45,7 +45,8 @@ def MatrixTrans(a):
             c[j][i] = a[i][j]
     return c 
 
-def MatrixPrint(a):
+def MatrixPrint(a, msg=""): # msg 
+    print(msg,end=" ")
     print(len(a),"x",len(a[0]))
     for i in range(len(a)):
         print(a[i])
