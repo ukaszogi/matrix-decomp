@@ -108,7 +108,7 @@ def HausQR(a): #another qr decomposition, but now using Hausholder reflections
     q = mh.MatrixTrans(q)
     return q, r
 
-def tri(a,bl): #tri checks for triangular upper matrix
+def triU(a,bl): #triU checks for triangular upper matrix
     for k in range(len(a)):
         for w in range(k+1,len(a[k])):
             if (a[w][k])**2 > bl: #cost 
@@ -121,7 +121,7 @@ def Francis(a,bl=0.00000000001,c=1000): #Francis algorithm of finding eigenvalue
     c = abort counter - after c iterations func just returns currently computed values
     '''
     i=0
-    while not(tri(a,bl)|tri(mh.MatrixTrans(a),bl)|(i==c)):
+    while not(triU(a,bl)|triU(mh.MatrixTrans(a),bl)|(i==c)):
         #print("i =",i)
         q, r = HausQR(a)
         i += 1
@@ -143,22 +143,53 @@ def SVD(a):
     singularvalues = list(map(sqrt,eigenvalues))
     mh.MatrixPrint([eigenvalues],"eigen ata")
     mh.MatrixPrint([singularvalues],"singular ata")
-    
+
+
 
 A = [
     [3, 2, 2],
     [2, 3, -2]
 ]
-b = [
+B = [
+    [2, 4],
+    [1, 3],
+    [0, 0],
+    [0, 0]
+]
+C = [
     [2, 4],
     [1, 3],
     [0, 0],
     [0, 0]
 ]
 
+cU = [
+    [0.82, -0.58, 0, 0],
+    [0.58, 0.82, 0, 0],
+    [0, 0, 1, 0],
+    [0, 0, 0, 1]
+]
+cS = [
+    [5.47, 0],
+    [0, 0.37],
+    [0, 0],
+    [0, 0]
+]
+cV = [
+    [0.40, -0.91],
+    [0.91, 0.40]
+]
 
 """
-mh.MatrixPrint(mh.MatrixMulti(b,mh.MatrixTrans(b)))
-mh.MatrixPrint(mh.MatrixMulti(mh.MatrixTrans(b),b))
+mh.MatrixPrint(mh.MatrixMulti(B,mh.MatrixTrans(B)))
+mh.MatrixPrint(mh.MatrixMulti(mh.MatrixTrans(B),B))
 """
 SVD(A)
+
+mh.MatrixPrint(
+    mh.MatrixMulti(
+        mh.MatrixMulti(cU,cS),
+        mh.MatrixTrans(cV)
+    ),
+    msg="USVt"
+)
