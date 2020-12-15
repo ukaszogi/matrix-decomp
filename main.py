@@ -115,8 +115,10 @@ def triU(a,bl): #triU checks for triangular upper matrix
                 return False
     return True
 
-def Francis(a,bl=0.00000000001,c=1000): #Francis algorithm of finding eigenvalues
+def Francis(a,bl=0.00000000001,c=1000):
     '''
+    Francis algorithm of finding eigenvalues using Hausholder reflections.
+
     bl = computational squared error, 
     c = abort counter - after c iterations func just returns currently computed values
     '''
@@ -150,12 +152,6 @@ A = [
     [3, 2, 2],
     [2, 3, -2]
 ]
-B = [
-    [2, 4],
-    [1, 3],
-    [0, 0],
-    [0, 0]
-]
 C = [
     [2, 4],
     [1, 3],
@@ -181,8 +177,8 @@ cV = [
 ]
 
 """
-mh.MatrixPrint(mh.MatrixMulti(B,mh.MatrixTrans(B)))
-mh.MatrixPrint(mh.MatrixMulti(mh.MatrixTrans(B),B))
+mh.MatrixPrint(mh.MatrixMulti(C,mh.MatrixTrans(C)))
+mh.MatrixPrint(mh.MatrixMulti(mh.MatrixTrans(C),C))
 """
 SVD(A)
 
