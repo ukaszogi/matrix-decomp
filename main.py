@@ -137,14 +137,18 @@ def SVD(a):
     ata = mh.MatrixMulti(mh.MatrixTrans(a),a)
     mh.MatrixPrint(aat,"aat")
     mh.MatrixPrint(ata,"ata")
-    eigenvalues = list(map(lambda x: round(x,ndigits=6), Francis(aat)))
-    singularvalues = list(map(sqrt,eigenvalues))
-    mh.MatrixPrint([eigenvalues],"eigen aat")
-    mh.MatrixPrint([singularvalues],"singular aat")
-    eigenvalues = list(map(lambda x: round(x,ndigits=6), Francis(ata)))
-    singularvalues = list(map(sqrt,eigenvalues))
-    mh.MatrixPrint([eigenvalues],"eigen ata")
-    mh.MatrixPrint([singularvalues],"singular ata")
+    eigenvalues_aat = list(map(lambda x: round(x,ndigits=6), Francis(aat)))
+    singularvalues_aat = list(map(sqrt,eigenvalues_aat))
+    mh.MatrixPrint([eigenvalues_aat],"eigen aat")
+    mh.MatrixPrint([singularvalues_aat],"singular aat")
+    eigenvalues_ata = list(map(lambda x: round(x,ndigits=6), Francis(ata)))
+    singularvalues_ata = list(map(sqrt,eigenvalues_ata))
+    mh.MatrixPrint([eigenvalues_ata],"eigen ata")
+    mh.MatrixPrint([singularvalues_ata],"singular ata")
+    S = mh.MatrixMake(len(a),len(a[0]))
+    for i in range(min(len(a),len(a[0]))):
+        S[i][i] = singularvalues_aat[i]
+    mh.MatrixPrint(S,msg="Σ")
 
 
 
