@@ -148,7 +148,7 @@ def SVD(a):
     S = mh.MatrixMake(len(a),len(a[0]))
     for i in range(min(len(a),len(a[0]))):
         S[i][i] = singularvalues_aat[i]
-    mh.MatrixPrint(S,msg="Σ")
+    mh.MatrixPrint(S, msg="Σ")
 
 
 
