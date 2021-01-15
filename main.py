@@ -180,10 +180,10 @@ cV = [
     [0.91, 0.40]
 ]
 
-"""
+
 mh.MatrixPrint(mh.MatrixMulti(C,mh.MatrixTrans(C)))
 mh.MatrixPrint(mh.MatrixMulti(mh.MatrixTrans(C),C))
-"""
+
 SVD(A)
 
 mh.MatrixPrint(
