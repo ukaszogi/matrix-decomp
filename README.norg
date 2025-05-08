@@ -1,0 +1,33 @@
+* Matrix decomposition
+
+  Worked on it before attending any university, I just asked some prof at a local uni if he'd like to give me some challanges.
+
+  Didn't ever manage to get SVD, but at least now i know (thanks to lin algebra 2 course) that it isn't so straight forward.
+
+** 2025-05-08 19:35
+
+   Class implementation. 
+
+   - (-) Basic Matrix class
+   -- (x) Shape
+   -- (x) Indexing
+   -- ( ) Slices
+   -- (x) Addition
+   -- (x) Multiplication
+   -- (x) Transposition
+   -- ( ) Create zeroed matrix with desired shape
+   - ( ) Collapsible
+         Collapsible is a class designed to /collapse/ to the desired shape, when it's modifing another matrix
+   -- ( ) Identity
+   --- (x) Indexing
+   --- ( ) Slices
+   --- (x) Matrix-Multiplication
+   --- (x) Matrix-Addition
+   -- ( ) Null
+   --- (x) Indexing
+   --- ( ) Slices
+   --- (x) Matrix-Multiplication
+   --- (x) Matrix-Addition
+   -- ( ) Null-Identity-Addition
+   -- ( ) Null-Identity-Multiplication
+
