@@ -61,6 +61,12 @@ class IdentityMatrix(CollapsibleMatrix):
     def __str__(self):
         return f"I{f"_{self.n}" if self.isCollapsed else ""}"
 
+    def collapse(self, n = None, m = None):
+        # collapse optimalisation
+        # matrix only exist as a square
+        p =  n if n else m if m else None
+        return CollapsibleMatrix.collapse(self, n=p, m=p)
+
 if __name__ == "__main__":
     print("Testing library Identity.py")
 
@@ -85,6 +91,5 @@ if __name__ == "__main__":
     idd @ a
     print(idd)
 
-    # BUG: Tu problemem jest, że najbliższa implementacja idd.__iadd__() jest w Matrix, a tam jak ciągnie definicję __getitem__, to tą Matrixową, czyli __a[][], a idd ma inną (czyli factor * i==j)
     idd += a.T
     print(idd, type(idd))

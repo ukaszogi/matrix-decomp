@@ -69,7 +69,6 @@ if __name__ == "__main__":
     print(nul @ a)
     print(nul + Matrix([[1,2,3]]))
 
-    # BUG: Tu problemem jest, że najbliższa implementacja nul.__iadd__() jest w Matrix, a tam nie robi po prostu return other, tylko sprawdza shape i iteruje po elementach (nie iteruje, bo shape niefajny)
     nul = NullMatrix()
     nul += a.T 
     print(nul)

@@ -1,5 +1,29 @@
 from Matrix import Matrix
 
+def addCondition(a, b):
+    if a.collapsed:
+        if a._shape != b._shape:
+            raise ValueError(f"Shapes don't match: {a._shape} != {b._shape}")
+        return
+    # updating shapes if applicable
+    elif self.n == other.n:
+        self.collapse(m = other.m)
+    elif self.m == other.m:
+        self.collapse(n = other.n)
+    elif self._shape == ("?", "?"):
+        self.collapse(other.n, other.m)
+
+def matmulCondition(a, b):
+    if a.m == "?":
+        # invoking child-collapse if exists
+        a.collapse(m = b.n)
+
+    elif a.m != b.n:
+        raise ValueError(f"Shapes don't match: {a._shape} and {b._shape} don't share inner component ({a.m != b.n})")
+
+    if a.n == "?":
+        raise ValueError(f"Tried to multiply {a._shape} and {b._shape} without fully collapsed shape")
+
 class CollapsibleMatrix(Matrix):
     def __init__(self, a=None):
         super().__init__([[]])
@@ -20,32 +44,50 @@ class CollapsibleMatrix(Matrix):
             raise ValueError("Not collapsed yet")
         return self.__collapsed
 
+    def __add__(self, other):
+        # if I'm here, there is no optimalisation implemented yet
+        addCondition(self, other)
+
+        # as a last resort defaulting to numerical O(n^2)
+        return Matrix.__matmul__(self, other)
+
     def __matmul__(self, other):
-        # TODO: Wyłapać niedozwolone mnożenia, i:
-        # - dać error, jeśli nie można 
-        # - jeśli można - collapse i NotImplemented (żeby wybombelkowało w górę>)
-        pass
+        # if I'm here, there is no optimalisation implemented yet
+        matmulCondition(self, other)
+
+        # as a last resort defaulting to numerical O(n^3)
+        return Matrix.__matmul__(self, other)
 
     def __str__(self):
         return "Funky matrix"
 
     def collapse(self, q = None, n = None, m = None):
+        if self.__collapsed:
+            #already collapsed
+            return self.__collapsed
+
         if q and not n:
-            # one arg alone -> square matrix
+            # shorthand: one arg alone -> square matrix
             return self.collapse(q, q)
-        if q and n:
-            # two unnamed args -> n x m
+        elif q and n:
+            # shorthand: two unnamed args -> n x m
             return self.collapse(n = q, m = n)
+
+        #add information to the shape
         if n:
+            if self.n != "?":
+                raise ValueError(f"Tried to collapse already collapsed dimension (how?)")
             self._shape = (n, self._shape[1])
         if m:
+            if self.m != "?":
+                raise ValueError(f"Tried to collapse already collapsed dimension (how?)")
             self._shape = (self._shape[0], m)
-        if type(self._shape[0]) != int or type(self._shape[1]) != int:
+
+        if n or m:
+            # not called to collapse
             return self
-        if not q and not n and not m:
-            # already collapsed
-            return self.__collapsed
-        
+
+        # ready and called for collapse
         # collapsing
         a = []
         for i in range(self.n):

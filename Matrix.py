@@ -18,8 +18,7 @@ class Matrix:
             yield row
 
     def __getitem__(self, index):
-        # TODO:
-        # - [1, :] ma zwrócić [[a, b, c]] a [:, 1] -> [[a], [b], [c]] 
+        # TODO: [1, :] ma zwrócić [[a, b, c]] a [:, 1] -> [[a], [b], [c]] 
         if type(index) == tuple and len(index) == 2:
             return self.__a[index[0]][index[1]]
 
@@ -35,7 +34,7 @@ class Matrix:
             raise ValueError(f"Shapes don't match: {self._shape} != {other._shape}")
 
         a = copy.deepcopy(self)
-        for (i, row) in enumerate(other.__a):
+        for (i, row) in enumerate(other):
             for (j, num) in enumerate(row):
                 a[i, j] += num
 
@@ -47,7 +46,7 @@ class Matrix:
         if other._shape != self._shape:
             raise ValueError(f"Shapes don't match: {self._shape} != {other._shape}")
 
-        for (i, row) in enumerate(other.__a):
+        for (i, row) in enumerate(other):
             for (j, num) in enumerate(row):
                 self[i, j] += num
 
@@ -58,8 +57,8 @@ class Matrix:
             raise ValueError(f"Cannot multiply types {type(self)} and {type(other)}")
 
         a = copy.deepcopy(self)
-        for i in range(len(a.__a)):
-            for j in range(len(a.__a[i])):
+        for (i, row) in enumerate(a):
+            for (j, num) in enumerate(row):
                 a[i, j] *= other
         return a
 
@@ -67,13 +66,14 @@ class Matrix:
         if type(other) not in (int, float):
             raise ValueError(f"Cannot multiply types {type(self)} and {type(other)}")
 
-        for i in range(len(a.__a)):
-            for j in range(len(a.__a[i])):
+        for (i, row) in enumerate(self):
+            for (j, num) in enumerate(row):
                 self[i, j] *= other
         return self
 
     def __matmul__(self, other):
-        if type(other) != Matrix:
+        print(other.__class__.__mro__)
+        if Matrix not in type(other).__mro__:
             raise ValueError(f"Cannot multiply types {type(self)} and {type(other)}")
 
         if self.m != other.n:

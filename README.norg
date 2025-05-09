@@ -22,9 +22,8 @@
          General problem with it is the order of operations:
    ~~ Check for shape errors
    ~~ Collapse
-   ~~ Compute
-      Right now it goes balls deep, and then collapses
-
+   ~~ Do any operations
+   ~~ Compute if necessery
    -- (?) Detecting matmul in abstract class
    -- (x) Identity
    --- (x) Indexing
@@ -38,10 +37,22 @@
    -- ( ) Null-Identity-Multiplication
    -- ( ) Elementary operations
    --- ( ) Row-scaling /D ,i, (m)/
+   ---- (x) Add, matmul opts.
+   ---- ( ) Print
    --- ( ) Row-addition /L ,|i\,j|, (m)/
+   ---- ( ) Add, matmul opts.
+   ---- ( ) Print
    --- ( ) Row-switching /T ,i\,j,/
+   ---- ( ) Add, matmul opts.
+   ---- ( ) Print
 
    Core questions:
+
+*** Hierarchy of optimalisation
+
+    Only at the last moment should i go to normal matmul. If i know at least one matrix is a special one, and i can write some code, that instead of O(n^3) O(n) does, i should do it. Of course, less code means less bugs, but bugs are at least visible.
+
+    I dont have to calculate the matrix at initialisation. Technically, if i have elementary and a matrix, i can do (sometimes even O(1)) on the matrix and not even collapse the elementary. If the calculation is in-place, i'll end up with just another /normal/ matrix, which has to be calculated.
 
 *** What about square matrices?
 
