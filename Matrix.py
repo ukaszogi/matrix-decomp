@@ -27,6 +27,15 @@ class Matrix:
     def __setitem__(self, index, a):
         self.__a[index[0]][index[1]] = a
 
+    def __eq__(self, other):
+        if self._shape != other._shape:
+            return False
+        for i in range(self.n):
+            for j in range(self.m):
+                if self[i, j] != other[i, j]:
+                    return False
+        return True
+
     def __add__(self, other):
         if type(other) != Matrix:
             raise ValueError(f"Cannot add types {type(self)} and {type(other)}")
@@ -72,7 +81,6 @@ class Matrix:
         return self
 
     def __matmul__(self, other):
-        print(other.__class__.__mro__)
         if Matrix not in type(other).__mro__:
             raise ValueError(f"Cannot multiply types {type(self)} and {type(other)}")
 
@@ -84,7 +92,7 @@ class Matrix:
             a.append([])
             for j in range(other.m):
                 a[i].append(0)
-                for p in range(other.n):
+                for p in range(self.m):
                     a[i][j] += self[i, p]*other[p, j]
 
         return Matrix(a)
@@ -95,13 +103,7 @@ class Matrix:
     __rsub__ = lambda self, other: other + -self
 
     def transpose(self):
-        a = []
-        for (i, row) in enumerate(self.__a):
-            for (j, num) in enumerate(row):
-                if i==0:
-                    a.append([])
-                a[j].append(num)
-        self.__a = a
+        self.__a = [[self[j, i] for j in range(self.n)] for i in range(self.m)]
         self._shape = self._shape[::-1]
         return self
 
@@ -124,17 +126,19 @@ class Matrix:
 if __name__ == "__main__":
     print("Testing library Matrix.py")
 
-    a = Matrix([[1,2,3],[4,5,6],[7,8,9]])
-    print(a)
+    A = Matrix([[1,2,3],[4,5,6],[7,8,9]])
+    print(A)
+    A.transpose()
+    print(A)
 
-    print(a*4)
-    print(a*1.4)
+    print(A*4)
+    print(A*1.4)
 
-    print(a.T)
+    print(A.T)
 
-    print(a + (-1 * a))
+    print(A + (-1 * A))
 
-    print(a[1,1])
+    print(A[1,1])
 
     b = Matrix([[0, 1, 4, 6],[8, 9, 10, 12]])
     print(b)
@@ -142,7 +146,7 @@ if __name__ == "__main__":
     print(b)
     print(b.n, b.m)
 
-    print(a @ a.T)
+    print(A @ A.T)
 
-    a += Matrix([[0,0,1],[0,0,1],[0,0,1]])
-    print(a)
+    A += Matrix([[0,0,1],[0,0,1],[0,0,1]])
+    print(A)

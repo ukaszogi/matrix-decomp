@@ -49,6 +49,9 @@ class IdentityMatrix(CollapsibleMatrix):
     def __str__(self):
         return f"I{f"_{self.n}" if self.isCollapsed else ""}"
 
+    def transpose(self):
+        pass
+
     def collapse(self, n = None, m = None):
         # collapse optimalisation
         # matrix only exist as a square

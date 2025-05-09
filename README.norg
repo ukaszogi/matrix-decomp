@@ -24,6 +24,9 @@
    ~~ Collapse
    ~~ Do any operations
    ~~ Compute if necessery
+
+   About the wording. *collapsed* sould already gibe collapsed result. *collapse* should indicate, that we got new insight about the dimension 
+
    -- (?) Detecting matmul in abstract class
    -- (x) Identity
    --- (x) Indexing

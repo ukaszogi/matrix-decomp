@@ -47,8 +47,11 @@ class CollapsibleMatrix(Matrix):
 
     @property
     def collapsed(self):
+        if "?" not in self._shape:
+            return self.collapse()
         if not self.__collapsed:
-            raise ValueError("Not collapsed yet")
+            return lambda *args: self.collapse(*args).collapsed
+            # raise ValueError("Not collapsed yet")
         return self.__collapsed
 
     def __add__(self, other):
@@ -108,11 +111,14 @@ class CollapsibleMatrix(Matrix):
 if __name__ == "__main__":
     print("Testing library Collapsible.py")
 
+    # c = CollapsibleMatrix()
+    #
+    # print(c, c.n, c.m )
+    # c.collapse(3)
+    # print(c)
+    # print(c.collapsed)
+
     c = CollapsibleMatrix()
-
-    print(c, c.n, c.m )
-    c.collapse(3)
-    print(c)
-
+    print(c.collapsed)
 
 
