@@ -1,6 +1,8 @@
 from Matrix import Matrix
 
 def addCondition(a, b):
+    if type(b) != Matrix:
+        raise ValueError(f"Cannot add types {type(a)} and {type(b)}")
     if a.collapsed:
         if a._shape != b._shape:
             raise ValueError(f"Shapes don't match: {a._shape} != {b._shape}")
@@ -21,8 +23,13 @@ def matmulCondition(a, b):
     elif a.m != b.n:
         raise ValueError(f"Shapes don't match: {a._shape} and {b._shape} don't share inner component ({a.m != b.n})")
 
+def rmatmulCondition(a, b):
     if a.n == "?":
-        raise ValueError(f"Tried to multiply {a._shape} and {b._shape} without fully collapsed shape")
+        # invoking child-collapse if exists
+        a.collapse(n = b.m)
+
+    elif a.n != b.m:
+        raise ValueError(f"Shapes don't match: {b._shape} and {a._shape} don't share inner component ({b.m != a.n})")
 
 class CollapsibleMatrix(Matrix):
     def __init__(self, a=None):

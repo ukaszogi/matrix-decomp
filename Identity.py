@@ -1,5 +1,5 @@
 from Matrix import Matrix
-from Collapsible import CollapsibleMatrix
+from Collapsible import CollapsibleMatrix, matmulCondition, addCondition
 import copy
 
 class IdentityMatrix(CollapsibleMatrix):
@@ -12,25 +12,16 @@ class IdentityMatrix(CollapsibleMatrix):
             return self.__factor if index[0] == index[1] else 0
 
     def __add__(self, other):
-        if type(other) != Matrix:
-            raise ValueError(f"Cannot add types {type(self)} and {type(other)}")
-        if (other.n != other.m) or (type(self.n) == int and self.n != other.n):
-            raise ValueError(f"Shapes don't match: {self._shape} != {other._shape}")
+        addCondition(self, other)
 
+        # add optimalisation O(n)
         a = copy.deepcopy(other)
         for i in range(a.n):
             a[i, i] += self.__factor
-
-        self.collapse(other.n)
         return a
 
     def __iadd__(self, other):
-        if type(other) != Matrix:
-            raise ValueError(f"Cannot add types {type(self)} and {type(other)}")
-        if (other.n != other.m) or (type(self.n) == int and self.n != other.n):
-            raise ValueError(f"Shapes don't match: {self._shape} != {other._shape}")
-
-        # HACK: Edytowanie selfa
+        # HACK: Edytowanie selfa, addCondition wewnątrz `other + self`
         self = other + self
         return self
 
@@ -48,10 +39,7 @@ class IdentityMatrix(CollapsibleMatrix):
         return self
 
     def __matmul__(self, other):
-        if type(other) != Matrix:
-            raise ValueError(f"Cannot multiply types {type(self)} and {type(other)}")
-
-        self.collapse(other.n)
+        matmulCondition(self, other)
         return other * self.__factor
 
     __radd__ = __add__

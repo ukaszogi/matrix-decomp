@@ -17,7 +17,7 @@ class ScalingMatrix(CollapsibleMatrix):
         # add optimalisation O(m)
         a = copy.deepcopy(other)
         for i in range(self.n):
-            a[i, i] += self[i, i]
+            a[i, i] += m if i == self.__i else 1
         return a
 
     def __matmul__(self, other):

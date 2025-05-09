@@ -1,5 +1,5 @@
 from Matrix import Matrix
-from Collapsible import CollapsibleMatrix
+from Collapsible import CollapsibleMatrix, matmulCondition, rmatmulCondition, addCondition
 import copy
 
 class NullMatrix(CollapsibleMatrix):
@@ -11,45 +11,29 @@ class NullMatrix(CollapsibleMatrix):
             return 0
 
     def __add__(self, other):
-        if type(other) != Matrix:
-            raise ValueError(f"Cannot add types {type(self)} and {type(other)}")
-        if (type(self.n) == int and self.n != other.n) or (type(self.m) == int and self.m != other.m):
-            raise ValueError(f"Shapes don't match: {self._shape} != {other._shape}")
-
-        self.collapse(other.n, other.m)
+        addCondition(self, other)
         return other
 
     def __iadd__(self, other):
-        if type(other) != Matrix:
-            raise ValueError(f"Cannot add types {type(self)} and {type(other)}")
-        if (type(self.n) == int and self.n != other.n) or (type(self.m) == int and self.m != other.m):
-            raise ValueError(f"Shapes don't match: {self._shape} != {other._shape}")
-
-        # HACK: Edytowanie selfa
+        # HACK: Edytowanie selfa, addCondition wewnątrz `other + self`
         self = other + self
         return self
 
     def __mul__(self, other):
         if type(other) not in (int, float):
             raise ValueError(f"Cannot multiply types {type(self)} and {type(other)}")
-
         return self
 
     def __matmul__(self, other):
-        if type(other) != Matrix:
-            raise ValueError(f"Cannot multiply types {type(self)} and {type(other)}")
-
-        self.collapse(m = other.n)
+        matmulCondition(self, other)
         return self
 
     def __rmatmul__(self, other):
-        if type(other) != Matrix:
-            raise ValueError(f"Cannot multiply types {type(self)} and {type(other)}")
-
-        self.collapse(n = other.m)
+        rmatmulCondition(self, other)
         return self
 
     __rmul__ = __mul__
+    __imul__ = __mul__
     __radd__ = __add__
 
     def __str__(self):
