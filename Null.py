@@ -19,6 +19,16 @@ class NullMatrix(CollapsibleMatrix):
         self.collapse(other.n, other.m)
         return other
 
+    def __iadd__(self, other):
+        if type(other) != Matrix:
+            raise ValueError(f"Cannot add types {type(self)} and {type(other)}")
+        if (type(self.n) == int and self.n != other.n) or (type(self.m) == int and self.m != other.m):
+            raise ValueError(f"Shapes don't match: {self._shape} != {other._shape}")
+
+        # HACK: Edytowanie selfa
+        self = other + self
+        return self
+
     def __mul__(self, other):
         if type(other) not in (int, float):
             raise ValueError(f"Cannot multiply types {type(self)} and {type(other)}")

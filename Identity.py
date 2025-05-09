@@ -14,7 +14,7 @@ class IdentityMatrix(CollapsibleMatrix):
     def __add__(self, other):
         if type(other) != Matrix:
             raise ValueError(f"Cannot add types {type(self)} and {type(other)}")
-        if other.n != other.m:
+        if (other.n != other.m) or (type(self.n) == int and self.n != other.n):
             raise ValueError(f"Shapes don't match: {self._shape} != {other._shape}")
 
         a = copy.deepcopy(other)
@@ -23,6 +23,16 @@ class IdentityMatrix(CollapsibleMatrix):
 
         self.collapse(other.n)
         return a
+
+    def __iadd__(self, other):
+        if type(other) != Matrix:
+            raise ValueError(f"Cannot add types {type(self)} and {type(other)}")
+        if (other.n != other.m) or (type(self.n) == int and self.n != other.n):
+            raise ValueError(f"Shapes don't match: {self._shape} != {other._shape}")
+
+        # HACK: Edytowanie selfa
+        self = other + self
+        return self
 
     def __mul__(self, other):
         if type(other) not in (int, float):
@@ -69,7 +79,7 @@ if __name__ == "__main__":
     #
     print(id2 := IdentityMatrix(2).collapse(3))
     print(type(id2))
-    print(type(idd.collapse()))
+    print(type(idd.collapsed))
 
     idd = IdentityMatrix()
     idd @ a
@@ -77,4 +87,4 @@ if __name__ == "__main__":
 
     # BUG: Tu problemem jest, że najbliższa implementacja idd.__iadd__() jest w Matrix, a tam jak ciągnie definicję __getitem__, to tą Matrixową, czyli __a[][], a idd ma inną (czyli factor * i==j)
     idd += a.T
-    print(idd)
+    print(idd, type(idd))
