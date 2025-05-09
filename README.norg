@@ -42,15 +42,15 @@
    --- ( ) Row-scaling /D ,i, (m)/
    ---- (x) Add, matmul opts.
    ---- ( ) Print
-   ---- ( ) rmatmul
+   ---- (x) rmatmul
    --- ( ) Row-addition /L ,|i\,j|, (m)/
    ---- (x) Add, matmul opts.
    ---- ( ) Print
-   ---- ( ) rmatmul
+   ---- (x) rmatmul
    --- ( ) Row-switching /T ,i\,j,/
    ---- (x) Add, matmul opts.
    ---- ( ) Print
-   ---- ( ) rmatmul
+   ---- (x) rmatmul
 
    Core questions:
 

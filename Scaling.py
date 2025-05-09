@@ -1,5 +1,5 @@
 from Matrix import Matrix
-from Collapsible import CollapsibleMatrix, matmulCondition, addCondition
+from Collapsible import CollapsibleMatrix, matmulCondition, rmatmulCondition, addCondition
 import copy
 
 class ScalingMatrix(CollapsibleMatrix):
@@ -27,6 +27,15 @@ class ScalingMatrix(CollapsibleMatrix):
         a = copy.deepcopy(other)
         for j in range(a.m):
             a[self.__i, j] *= self.__m
+        return a
+
+    def __rmatmul__(self, other):
+        rmatmulCondition(self, other)
+
+        # matmul optimalisation O(m)
+        a = copy.deepcopy(other)
+        for i in range(a.n):
+            a[i, self.__i] *= self.__m
         return a
 
     def collapse(self, n = None, m = None):

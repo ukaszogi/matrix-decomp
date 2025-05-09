@@ -1,5 +1,5 @@
 from Matrix import Matrix
-from Collapsible import CollapsibleMatrix, matmulCondition, addCondition
+from Collapsible import CollapsibleMatrix, matmulCondition, rmatmulCondition, addCondition
 import copy
 
 class CombinationMatrix(CollapsibleMatrix):
@@ -30,6 +30,16 @@ class CombinationMatrix(CollapsibleMatrix):
         for j in range(a.m):
             a[self.__i, j] += self.__m * a[self.__j, j]
         return a
+
+    def __rmatmul__(self, other):
+        rmatmulCondition(self, other)
+
+        # rmatmul optimalisation O(n)
+        a = copy.deepcopy(other)
+        for i in range(a.n):
+            a[i, self.__i] += self.__m * a[i, self.__j]
+        return a
+
 
     def collapse(self, n = None, m = None):
         # collapse optimalisation

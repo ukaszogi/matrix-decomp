@@ -1,5 +1,5 @@
 from Matrix import Matrix
-from Collapsible import CollapsibleMatrix, matmulCondition, addCondition
+from Collapsible import CollapsibleMatrix, matmulCondition, rmatmulCondition, addCondition
 import copy
 
 class PermutationMatrix(CollapsibleMatrix):
@@ -39,6 +39,14 @@ class PermutationMatrix(CollapsibleMatrix):
         # matmul optimalisation O(1)
         a = copy.deepcopy(other)
         a[self.__i,:], a[self.__j,:] = a[self.__j,:], a[self.__i,:]
+        return a
+
+    def __rmatmul__(self, other):
+        rmatmulCondition(self, other)
+
+        # rmatmul optimalisation O(1)
+        a = copy.deepcopy(other)
+        a[:,self.__i], a[:,self.__j] = a[:,self.__j], a[:,self.__i]
         return a
 
     def collapse(self, n = None, m = None):
