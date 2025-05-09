@@ -30,4 +30,30 @@
    --- (x) Matrix-Addition
    -- ( ) Null-Identity-Addition
    -- ( ) Null-Identity-Multiplication
+   -- ( ) Elementary operations
+   --- ( ) Row-scaling /D ,i, (m)/
+   --- ( ) Row-addition /L ,|i\,j|, (m)/
+   --- ( ) Row-switching /T ,i\,j,/
 
+   Core questions:
+
+*** What about square matrices?
+
+    Right now many considered operation only make sanse on squared matrices: some decompositions and determinant f.e.
+
+*** How abstract should i get?
+
+    In pursuit of optimalisation I think about `MatrixAndInverse` class, where the inverse would be sequentialy updated, so:
+    @code python
+    class MatrixAndInverse(Matrix):
+      def __init__(self, a):
+    self.__pri = super().__init__(a)
+    self.__inv = self.__pri.inverse()
+
+    def __mul__(self, other):
+      self.__pri = self.__pri * other.__pri
+    self.__inv = other.__inv * self.__inv
+    @end
+
+    Really good for LR, elementary matricies would be of that class. But is it usefull?
+    I could just keep track of the inverse with another object, just for the LR

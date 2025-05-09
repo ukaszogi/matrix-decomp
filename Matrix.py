@@ -3,7 +3,10 @@ import copy
 class Matrix:
     def __init__(self, a):
         self.__a = a
-        self.__shape = (len(a), len(a[0]))
+        if a == [[]]:
+            self.__shape = (0, 0)
+        else:
+            self.__shape = (len(a), len(a[0]))
 
     @property
     def n(self):
@@ -18,6 +21,8 @@ class Matrix:
             yield row
 
     def __getitem__(self, index):
+        # TODO:
+        # - [1, :] ma zwrócić [[a, b, c]] a [:, 1] -> [[a], [b], [c]] 
         if type(index) == tuple and len(index) == 2:
             return self.__a[index[0]][index[1]]
 
@@ -39,14 +44,38 @@ class Matrix:
 
         return a
 
-    def __mul__(self, other):
-        if type(other) in (int, float):
-            a = copy.deepcopy(self)
-            for i in range(len(a.__a)):
-                for j in range(len(a.__a[i])):
-                    a[i, j] *= other
-            return a
+    def __iadd__(self, other):
+        if type(other) != Matrix:
+            raise ValueError(f"Cannot add types {type(self)} and {type(other)}")
+        if other.__shape != self.__shape:
+            raise ValueError(f"Shapes don't match: {self.__shape} != {other.__shape}")
 
+        for (i, row) in enumerate(other.__a):
+            for (j, num) in enumerate(row):
+                self[i, j] += num
+
+        return self
+
+    def __mul__(self, other):
+        if type(other) not in (int, float):
+            raise ValueError(f"Cannot multiply types {type(self)} and {type(other)}")
+
+        a = copy.deepcopy(self)
+        for i in range(len(a.__a)):
+            for j in range(len(a.__a[i])):
+                a[i, j] *= other
+        return a
+
+    def __imul__(self, other):
+        if type(other) not in (int, float):
+            raise ValueError(f"Cannot multiply types {type(self)} and {type(other)}")
+
+        for i in range(len(a.__a)):
+            for j in range(len(a.__a[i])):
+                self[i, j] *= other
+        return self
+
+    def __matmul__(self, other):
         if type(other) != Matrix:
             raise ValueError(f"Cannot multiply types {type(self)} and {type(other)}")
 
@@ -116,4 +145,7 @@ if __name__ == "__main__":
     print(b)
     print(b.n, b.m)
 
-    print(a * a.T)
+    print(a @ a.T)
+
+    a += Matrix([[0,0,1],[0,0,1],[0,0,1]])
+    print(a)

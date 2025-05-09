@@ -10,14 +10,23 @@ class NullMatrix(Matrix):
             return 0
 
     def __add__(self, other):
-        print("Catched addition and optimized")
-        if type(other) == Matrix:
-            return other
+        if type(other) == Matrix and other.n == other.m:
+            a = copy.deepcopy(other)
+            for i in range(a.n):
+                a[i, i] += self.__factor
+        return a
 
     def __mul__(self, other):
-        print("Catched multiplication and optimized")
-        if type(other) in (Matrix, int, float):
-            return self
+        if type(other) not in (int, float):
+            raise ValueError(f"Cannot multiply types {type(self)} and {type(other)}")
+
+        return self
+
+    def __matmul__(self, other):
+        if type(other) != Matrix:
+            raise ValueError(f"Cannot multiply types {type(self)} and {type(other)}")
+
+        return self
 
     __rmul__ = __mul__
     __radd__ = __add__

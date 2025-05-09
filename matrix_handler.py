@@ -121,7 +121,7 @@ def MatrixInverse(a):
             b[j][i]=Cofactor(a,i,j)/MatrixDet(a)
     return b
 
-def Test():
+if __name__ == "__main__":
     a = [[2.5,2],[2,2]]
     b = [[3,3],[3,3]]
     c = [[1],[1]]
@@ -140,5 +140,4 @@ def Test():
     MatrixPrint(MatrixInverse(a))
     d = MatrixInverse(a)
     MatrixPrint(MatrixMulti(a,d))
-    
-#Test()
+
