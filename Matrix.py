@@ -3,18 +3,15 @@ import copy
 class Matrix:
     def __init__(self, a):
         self.__a = a
-        if a == [[]]:
-            self.__shape = (0, 0)
-        else:
-            self.__shape = (len(a), len(a[0]))
+        self._shape = (len(a), len(a[0]))
 
     @property
     def n(self):
-        return self.__shape[0]
+        return self._shape[0]
 
     @property
     def m(self):
-        return self.__shape[1]
+        return self._shape[1]
 
     def __iter__(self):
         for row in self.__a:
@@ -34,8 +31,8 @@ class Matrix:
     def __add__(self, other):
         if type(other) != Matrix:
             raise ValueError(f"Cannot add types {type(self)} and {type(other)}")
-        if other.__shape != self.__shape:
-            raise ValueError(f"Shapes don't match: {self.__shape} != {other.__shape}")
+        if other._shape != self._shape:
+            raise ValueError(f"Shapes don't match: {self._shape} != {other._shape}")
 
         a = copy.deepcopy(self)
         for (i, row) in enumerate(other.__a):
@@ -47,8 +44,8 @@ class Matrix:
     def __iadd__(self, other):
         if type(other) != Matrix:
             raise ValueError(f"Cannot add types {type(self)} and {type(other)}")
-        if other.__shape != self.__shape:
-            raise ValueError(f"Shapes don't match: {self.__shape} != {other.__shape}")
+        if other._shape != self._shape:
+            raise ValueError(f"Shapes don't match: {self._shape} != {other._shape}")
 
         for (i, row) in enumerate(other.__a):
             for (j, num) in enumerate(row):
@@ -80,7 +77,7 @@ class Matrix:
             raise ValueError(f"Cannot multiply types {type(self)} and {type(other)}")
 
         if self.m != other.n:
-            raise ValueError(f"Shapes don't match: {self.__shape} and {other.__shape} don't share inner component ({self.m != other.n})")
+            raise ValueError(f"Shapes don't match: {self._shape} and {other._shape} don't share inner component ({self.m != other.n})")
 
         a = []
         for i in range(self.n):
@@ -105,7 +102,7 @@ class Matrix:
                     a.append([])
                 a[j].append(num)
         self.__a = a
-        self.__shape = self.__shape[::-1]
+        self._shape = self._shape[::-1]
         return self
 
     @property
@@ -120,7 +117,7 @@ class Matrix:
             s += str(row)
             if i != len(self.__a) - 1:
                 s += '\n'
-        s += '] ' + str(self.__shape) + '\n'
+        s += '] ' + str(self._shape) + '\n'
         return s
 
 

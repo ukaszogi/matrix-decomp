@@ -1,20 +1,23 @@
 from Matrix import Matrix
-from Identity import IdentityMatrix
+from Collapsible import CollapsibleMatrix
+import copy
 
-class NullMatrix(Matrix):
+class NullMatrix(CollapsibleMatrix):
     def __init__(self):
-        pass
+        super().__init__()
 
     def __getitem__(self, index):
         if type(index) == tuple and len(index) == 2:
             return 0
 
     def __add__(self, other):
-        if type(other) == Matrix and other.n == other.m:
-            a = copy.deepcopy(other)
-            for i in range(a.n):
-                a[i, i] += self.__factor
-        return a
+        if type(other) != Matrix:
+            raise ValueError(f"Cannot add types {type(self)} and {type(other)}")
+        if (type(self.n) == int and self.n != other.n) or (type(self.m) == int and self.m != other.m):
+            raise ValueError(f"Shapes don't match: {self._shape} != {other._shape}")
+
+        self.collapse(other.n, other.m)
+        return other
 
     def __mul__(self, other):
         if type(other) not in (int, float):
@@ -26,13 +29,24 @@ class NullMatrix(Matrix):
         if type(other) != Matrix:
             raise ValueError(f"Cannot multiply types {type(self)} and {type(other)}")
 
+        self.collapse(m = other.n)
+        return self
+
+    def __rmatmul__(self, other):
+        if type(other) != Matrix:
+            raise ValueError(f"Cannot multiply types {type(self)} and {type(other)}")
+
+        self.collapse(n = other.m)
         return self
 
     __rmul__ = __mul__
     __radd__ = __add__
 
     def __str__(self):
-        return "0"
+        if int not in (type(self.n), type(self.m)):
+            return "0"
+
+        return f"0_({self.n}x{self.m})"
 
 if __name__ == "__main__":
     print("Testing library Null.py")
@@ -42,10 +56,10 @@ if __name__ == "__main__":
     
     nul = NullMatrix()
     print(nul, type(nul))
-    print(nul * a)
-    print(a * nul)
+    print(nul @ a)
+    print(nul + Matrix([[1,2,3]]))
 
-    # TODO: mnożenie 0 z 1
-    idd = IdentityMatrix()
-    print(nul * idd)
-    print(idd * nul)
+    # BUG: Tu problemem jest, że najbliższa implementacja nul.__iadd__() jest w Matrix, a tam nie robi po prostu return other, tylko sprawdza shape i iteruje po elementach (nie iteruje, bo shape niefajny)
+    nul = NullMatrix()
+    nul += a.T 
+    print(nul)

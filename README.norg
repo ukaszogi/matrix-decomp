@@ -15,17 +15,23 @@
    -- (x) Addition
    -- (x) Multiplication
    -- (x) Transposition
-   -- ( ) Create zeroed matrix with desired shape
+   -- (x) Create zeroed matrix with desired shape
+          `Null().collapse(n, m)`
    - ( ) Collapsible
-         Collapsible is a class designed to /collapse/ to the desired shape, when it's modifing another matrix
-   -- ( ) Identity
+         Collapsible is a class designed to /collapse/ to the desired shape, when it's modifing another matrix.
+         General problem with it is the order of operations:
+   ~~ Check for shape errors
+   ~~ Collapse
+   ~~ Compute
+      Right now it goes balls deep, and then collapses
+
+   -- (?) Detecting matmul in abstract class
+   -- (x) Identity
    --- (x) Indexing
-   --- ( ) Slices
    --- (x) Matrix-Multiplication
    --- (x) Matrix-Addition
-   -- ( ) Null
+   -- (x) Null
    --- (x) Indexing
-   --- ( ) Slices
    --- (x) Matrix-Multiplication
    --- (x) Matrix-Addition
    -- ( ) Null-Identity-Addition
