@@ -50,8 +50,12 @@ class CollapsibleMatrix(Matrix):
         if "?" not in self._shape:
             return self.collapse()
         if not self.__collapsed:
-            return lambda *args: self.collapse(*args).collapsed
-            # raise ValueError("Not collapsed yet")
+            def collapseCallback(*args):
+                if len(args) > 0:
+                    return self.collapse(*args).collapsed
+                else:
+                    raise ValueError("Not collapsed yet")
+            return temp
         return self.__collapsed
 
     def __add__(self, other):
@@ -67,6 +71,13 @@ class CollapsibleMatrix(Matrix):
 
         # as a last resort defaulting to numerical O(n^3)
         return Matrix.__matmul__(self, other)
+
+    def __rmatmul__(self, other):
+        # if I'm here, there is no optimalisation implemented yet
+        rmatmulCondition(self, other)
+
+        # as a last resort defaulting to numerical O(n^3)
+        return Matrix.__rmatmul__(self, other)
 
     def __str__(self):
         return "Funky matrix"
@@ -98,7 +109,7 @@ class CollapsibleMatrix(Matrix):
             return self
 
         # ready and called for collapse
-        # collapsing
+        # collapsing *O(kn^2)*
         a = []
         for i in range(self.n):
             a.append([])
@@ -120,5 +131,6 @@ if __name__ == "__main__":
 
     c = CollapsibleMatrix()
     print(c.collapsed)
+    print(c.collapsed(3))
 
 

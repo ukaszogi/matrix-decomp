@@ -62,21 +62,18 @@ if __name__ == "__main__":
     print("Testing library Identity.py")
 
     idd = IdentityMatrix()
-    # print(idd, idd.n, idd.m)
+    print(idd, type(idd), idd.n, idd.m)
 
     a = Matrix([[1,2,3],[4,5,6],[7,8,9]])
-    print(a)
-    print(idd, type(idd))
     print(idd @ a)
     print(idd)
-    # print(a @ idd)
-    # print(idd + -a)
-    # print(idd - a)
+    print(a @ idd)
+    print(idd - a)
     # print(a - idd)
-    #
+
     print(id2 := IdentityMatrix(2).collapse(3))
-    print(type(id2))
-    print(type(idd.collapsed))
+    print("collapse:", type(id2))
+    print("collapsed:", type(id2.collapsed))
 
     idd = IdentityMatrix()
     idd @ a

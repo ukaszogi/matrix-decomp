@@ -97,6 +97,9 @@ class Matrix:
 
         return Matrix(a)
 
+    def __rmatmul__(self, other):
+        return other.__matmul__(self)
+
     __rmul__ = __mul__
     __neg__ = lambda self: self * -1
     __sub__ = lambda self, other: self + -other
@@ -140,13 +143,18 @@ if __name__ == "__main__":
 
     print(A[1,1])
 
-    b = Matrix([[0, 1, 4, 6],[8, 9, 10, 12]])
-    print(b)
-    b.transpose()
-    print(b)
-    print(b.n, b.m)
+    C = Matrix([[0, 1, 4, 6],[8, 9, 10, 12]])
+    print(C)
+    C.transpose()
+    print(C)
+    print(C.n, C.m)
 
     print(A @ A.T)
 
     A += Matrix([[0,0,1],[0,0,1],[0,0,1]])
     print(A)
+
+    B = Matrix([[1,2,3,2],[4,10,0,1],[8,0,-3,-16]])
+
+    print(A, B, C)
+    print(A @ B @ C)

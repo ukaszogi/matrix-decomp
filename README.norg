@@ -54,6 +54,12 @@
 
    Core questions:
 
+*** How to make Collapsible make sense
+
+    - `collapse(q, n, m)` should collapse on some dimension. If something about it is wrong (dim already collapsed) -> error
+    - `collapsed` should generally be a property, that returns type `Matrix`. It's main work is to invoke the calculation and creation of said Matrix. If not ready for collapse - error
+    - `collapsed(q, n, m)` should be a shorthand for `collapse(q, n, m).collapsed`. It should do both, if possible
+
 *** Hierarchy of optimalisation
 
     Only at the last moment should i go to normal matmul. If i know at least one matrix is a special one, and i can write some code, that instead of O(n^3) O(n) does, i should do it. Of course, less code means less bugs, but bugs are at least visible.
@@ -75,7 +81,7 @@
 
     def __mul__(self, other):
       self.__pri = self.__pri * other.__pri
-    self.__inv = other.__inv * self.__inv
+      self.__inv = other.__inv * self.__inv
     @end
 
     Really good for LR, elementary matricies would be of that class. But is it usefull?
